@@ -198,6 +198,16 @@ dialog.hist::backdrop{background:rgba(30,20,70,.45)}
 .hist-list .meta{flex:1;min-width:0;overflow-wrap:anywhere}
 .hist-list .meta small{display:block;color:var(--muted)}
 .hist-list .empty{justify-content:center;color:var(--muted);padding:32px 16px}
+.tabs{display:flex;gap:6px;padding:12px 16px 0}
+.tabs button{flex:1;border:1px solid var(--line);background:var(--soft);border-radius:10px;padding:7px 10px;cursor:pointer;font-weight:600;display:inline-flex;gap:6px;align-items:center;justify-content:center}
+.tabs button[aria-selected="true"]{background:linear-gradient(135deg,#5b4fe0,#9b5cff);color:#fff;border-color:transparent}
+.pass{margin:12px 16px 0;padding:12px;border:1px dashed var(--accent);border-radius:12px;background:var(--accent-soft);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.pass p{margin:0;flex-basis:100%;font-size:.92rem}
+.pass input{flex:1;min-width:12ch;border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:7px 10px}
+.pass .err{color:var(--risk);font-weight:600}
+.sync-line{padding:8px 16px 0;font-size:.85rem;color:var(--muted);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.sync-line .i{width:16px;height:16px}
+.sync-line.warn{color:var(--mid)}
 .hist-foot{padding:10px 16px;border-top:1px solid var(--line);font-size:.82rem;color:var(--muted)}
 @media (max-width:520px){.hist-list li{flex-wrap:wrap}.hist-list .meta{flex-basis:100%}}
 
@@ -264,6 +274,7 @@ dialog.hist::backdrop{background:rgba(30,20,70,.45)}
   <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></symbol>
   <symbol id="i-open" viewBox="0 0 24 24"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.2 10H20a2 2 0 0 1 1.9 2.5l-1.5 6A2 2 0 0 1 18.4 20H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.7.9l.8 1.2a2 2 0 0 0 1.7.9H18a2 2 0 0 1 2 2v2"/></symbol>
   <symbol id="i-scale" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M8 9a6 6 0 0 1 8 0"/><path d="m12 12 1.5-3"/></symbol>
+  <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.7-9h1.8a4.5 4.5 0 1 1 0 9Z"/></symbol>
   <!-- domain icons -->
   <symbol id="i-fall" viewBox="0 0 24 24"><path d="M4 16v-2.4C4 11.5 3 10.5 3 8c0-2.7 1.5-6 4.5-6C9.4 2 10 3.8 10 5.5c0 3.1-2 5.7-2 8.7V16a2 2 0 1 1-4 0Z"/><path d="M20 20v-2.4c0-2.1 1-3.1 1-5.6 0-2.7-1.5-6-4.5-6C14.6 6 14 7.8 14 9.5c0 3.1 2 5.7 2 8.7V20a2 2 0 1 0 4 0Z"/><path d="M16 17h4"/><path d="M4 13h4"/></symbol>
   <symbol id="i-nutr" viewBox="0 0 24 24"><path d="M12 6.5C10.5 5 8.5 5 7 5.5 4 6.5 3 10 4 14c1 3.5 3.5 7 6 7 1 0 1.3-.5 2-.5s1 .5 2 .5c2.5 0 5-3.5 6-7 1-4 0-7.5-3-8.5-1.5-.5-3.5-.5-5 1z"/><path d="M12 6.5C12 4 13 2.5 15 2"/></symbol>
@@ -362,6 +373,16 @@ dialog.hist::backdrop{background:rgba(30,20,70,.45)}
     <h2 id="hist-h">ประวัติการประเมิน</h2>
     <button class="btn sm" id="histClose" type="button"><svg class="i"><use href="#i-x"/></svg>ปิด</button>
   </div>
+  <div class="tabs" id="histTabs" role="tablist" hidden>
+    <button type="button" role="tab" data-tab="local" aria-selected="true"><svg class="i"><use href="#i-user"/></svg>เครื่องนี้</button>
+    <button type="button" role="tab" data-tab="shared" aria-selected="false"><svg class="i"><use href="#i-cloud"/></svg>ทุกคน (ระบบกลาง)</button>
+  </div>
+  <form class="pass" id="passBox" hidden>
+    <p>ใส่<b>รหัสผ่านทีม</b>เพื่อดูประวัติการประเมินของทุกคน <span class="err" id="passErr"></span></p>
+    <input type="password" id="passIn" autocomplete="current-password" placeholder="รหัสผ่านทีม" aria-label="รหัสผ่านทีม">
+    <button class="btn sm primary" type="submit">เข้าสู่ระบบ</button>
+  </form>
+  <div class="sync-line" id="syncLine" hidden></div>
   <div class="hist-tools">
     <label class="search"><svg class="i"><use href="#i-search"/></svg><input type="search" id="histQ" placeholder="ค้นหาชื่อ หรือ HN" aria-label="ค้นหาชื่อ หรือ HN"></label>
     <button class="btn sm" id="btnCsv" type="button"><svg class="i"><use href="#i-sheet"/></svg>ส่งออก Excel (CSV)</button>
@@ -370,7 +391,7 @@ dialog.hist::backdrop{background:rgba(30,20,70,.45)}
     <input type="file" id="fileImport" accept=".json,application/json" hidden>
   </div>
   <ul class="hist-list" id="histList"></ul>
-  <div class="hist-foot">ข้อมูลเก็บไว้ในเครื่องนี้เท่านั้น ไม่ได้ส่งขึ้นอินเทอร์เน็ต · กด “สำรองข้อมูล” เป็นระยะเพื่อป้องกันข้อมูลสูญหาย</div>
+  <div class="hist-foot" id="histFoot">ข้อมูลเก็บไว้ในเครื่องนี้เท่านั้น ไม่ได้ส่งขึ้นอินเทอร์เน็ต · กด “สำรองข้อมูล” เป็นระยะเพื่อป้องกันข้อมูลสูญหาย</div>
 </dialog>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -393,11 +414,15 @@ const DOMAINS = [
 const ADL_LEVELS = {some:'ทำได้บางเรื่อง ต้องมีคนช่วย', most:'ทำไม่ได้ ต้องมีคนช่วยเป็นส่วนใหญ่/ทั้งหมด'};
 const FIELDS = ['fName','fHN','fAge','fWt','fHt','fDate','fAppt','fBy'];
 const STORE_KEY = 'onepage-records-v1', DRAFT_KEY = 'onepage-draft-v1';
+// Shared storage: URL of the Google Apps Script web app (see apps-script/Code.gs). Empty = this device only.
+const SYNC_URL = '';
+const OUTBOX_KEY = 'onepage-outbox-v1', PASS_KEY = 'onepage-teampass-v1';
 const $ = id => document.getElementById(id);
 const esc = s => String(s??'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
 
 let ans = {}; let adlLevel = null; let bmiAuto = false;
 let currentId = null, isSample = false, last = null;
+let histTab = 'local', shared = null, openedShared = null;
 const key = (d,i) => d.id+'-'+i;
 const isProblem = (d,v) => d.invert ? v===false : v===true;
 
@@ -568,7 +593,7 @@ function update(){
 function renderAppState(){
   const recs = getRecords();
   $('histCount').textContent = recs.length;
-  const editing = currentId && recs.find(r=>r.id===currentId);
+  const editing = currentId && (recs.find(r=>r.id===currentId) || (openedShared && openedShared.id===currentId ? openedShared : null));
   const label = editing ? 'บันทึกการแก้ไข' : 'บันทึกผล';
   document.querySelectorAll('#btnSave .lbl,#btnSave2 .lbl').forEach(el=>el.textContent=label);
   $('editing').hidden = !editing;
@@ -595,8 +620,9 @@ function saveRecord(){
   if(!name && !hn){ toast('กรุณาใส่ชื่อ-สกุล หรือ HN ก่อนบันทึก'); $('fName').focus(); return; }
   const recs = getRecords();
   const i = currentId ? recs.findIndex(r=>r.id===currentId) : -1;
+  const isEdit = i>=0 || !!(openedShared && openedShared.id===currentId);
   const rec = {
-    id: i>=0 ? currentId : 'r'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),
+    id: isEdit ? currentId : 'r'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),
     savedAt: new Date().toISOString(),
     ...snapshot(),
     summary: {
@@ -607,13 +633,79 @@ function saveRecord(){
   if(i>=0) recs[i]=rec; else recs.unshift(rec);
   if(!store.set(STORE_KEY, recs)){ toast('บันทึกไม่สำเร็จ: เบราว์เซอร์นี้ไม่อนุญาตให้เก็บข้อมูล'); return; }
   currentId = rec.id;
-  toast((i>=0?'บันทึกการแก้ไขแล้ว':'บันทึกผลการประเมินแล้ว') + (last.done<last.total?` (ประเมินไป ${last.done}/${last.total} ข้อ)`:''));
+  if(openedShared && openedShared.id===rec.id) openedShared = rec;
+  toast((isEdit?'บันทึกการแก้ไขแล้ว':'บันทึกผลการประเมินแล้ว') + (last.done<last.total?` (ประเมินไป ${last.done}/${last.total} ข้อ)`:''));
   update();
+  if(SYNC_URL){ queue(rec); flush().then(()=>{ if(pending().some(x=>x.id===rec.id)) toast('บันทึกในเครื่องแล้ว แต่ยังส่งขึ้นระบบกลางไม่ได้ จะส่งให้อัตโนมัติเมื่อออนไลน์'); }); }
 }
 
+/* ---------- shared storage (Google Sheets via Apps Script) ---------- */
+async function api(action, payload={}){
+  // text/plain avoids a CORS preflight, which Apps Script cannot answer
+  const res = await fetch(SYNC_URL, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify({action, ...payload})});
+  const data = await res.json();
+  if(!data.ok) throw Object.assign(new Error(data.error||'error'), {code:data.error});
+  return data;
+}
+const pending = () => { const o=store.get(OUTBOX_KEY,[]); return Array.isArray(o)?o:[]; };
+function queue(rec){ store.set(OUTBOX_KEY, [...pending().filter(x=>x.id!==rec.id), rec]); }
+let flushing = null;
+function flush(){
+  if(!SYNC_URL || !navigator.onLine) return Promise.resolve();
+  if(flushing) return flushing;
+  const run = async()=>{
+    try{
+      for(let ob=pending(); ob.length; ob=pending()){
+        const r = ob[0];
+        await api('save', {id:r.id, savedAt:r.savedAt, header:SHEET_HEAD, row:csvRow(r), json:JSON.stringify(r)});
+        // drop only the version that was sent; a newer edit saved meanwhile stays queued
+        store.set(OUTBOX_KEY, pending().filter(x=>!(x.id===r.id && x.savedAt===r.savedAt)));
+        if(shared){ const k=shared.findIndex(x=>x.id===r.id); if(k>=0) shared[k]=r; else shared.unshift(r); }
+      }
+    }catch(e){ /* stays queued; retried on next save, on reconnect or on next open */ }
+  };
+  // clear the flag only after assignment (run() can finish synchronously when the queue is empty)
+  flushing = run().finally(()=>{ flushing=null; renderAppState(); if($('hist').open) renderHist(); });
+  return flushing;
+}
+window.addEventListener('online', ()=>flush());
+
+async function loadShared(){
+  if(!store.get(PASS_KEY,'')){ shared=null; renderHist(); return; }
+  $('histList').innerHTML = '<li class="empty">กำลังโหลดข้อมูลจากระบบกลาง…</li>';
+  try{
+    await flush();
+    const data = await api('list', {password:store.get(PASS_KEY,'')});
+    shared = data.records; renderHist();
+  }catch(e){
+    shared = null;
+    if(e.code==='bad_password'){ store.set(PASS_KEY,''); $('passErr').textContent='รหัสผ่านไม่ถูกต้อง'; renderHist(); }
+    else $('histList').innerHTML = '<li class="empty">เชื่อมต่อระบบกลางไม่ได้ ตรวจสอบอินเทอร์เน็ตแล้วลองใหม่</li>';
+  }
+}
+
+const histSource = () => histTab==='shared' ? (shared||[]) : getRecords();
 function renderHist(){
+  const sharedTab = histTab==='shared';
+  const loggedIn = !!store.get(PASS_KEY,'');
+  $('histTabs').hidden = !SYNC_URL;
+  document.querySelectorAll('#histTabs button').forEach(b=>b.setAttribute('aria-selected', String(b.dataset.tab===histTab)));
+  $('passBox').hidden = !(sharedTab && !loggedIn);
+  $('btnJson').hidden = $('btnImport').hidden = sharedTab;
+  $('histFoot').textContent = sharedTab
+    ? 'ข้อมูลรวมของทุกคนเก็บใน Google Sheet ของหน่วยงาน · ห้ามเปิดเผยรหัสผ่านทีมแก่ผู้ไม่เกี่ยวข้อง'
+    : (SYNC_URL ? 'ผลที่บันทึกในเครื่องนี้จะถูกส่งขึ้นระบบกลางอัตโนมัติด้วย' : 'ข้อมูลเก็บไว้ในเครื่องนี้เท่านั้น ไม่ได้ส่งขึ้นอินเทอร์เน็ต · กด “สำรองข้อมูล” เป็นระยะเพื่อป้องกันข้อมูลสูญหาย');
+  const n = pending().length, sl = $('syncLine');
+  sl.hidden = !SYNC_URL || (!n && !(sharedTab && loggedIn));
+  sl.className = 'sync-line' + (n ? ' warn' : '');
+  sl.innerHTML = (n ? '<svg class="i"><use href="#i-alert"/></svg>รอส่งขึ้นระบบกลาง '+n+' รายการ <button class="link" type="button" data-act="flush">ส่งตอนนี้</button>' : '')
+    + (sharedTab && loggedIn ? '<button class="link" type="button" data-act="reload">รีเฟรช</button><button class="link" type="button" data-act="logout">ออกจากระบบกลาง</button>' : '');
+  if(sharedTab && !loggedIn){ $('histList').innerHTML=''; return; }
+  renderHistList();
+}
+function renderHistList(){
   const q = $('histQ').value.trim().toLowerCase();
-  const recs = getRecords().filter(r=>!q || `${r.fields.fName} ${r.fields.fHN}`.toLowerCase().includes(q));
+  const recs = histSource().filter(r=>!q || `${r.fields.fName} ${r.fields.fHN}`.toLowerCase().includes(q));
   $('histList').innerHTML = recs.length ? recs.map(r=>{
     const n = r.summary.risks.length;
     return `<li><span class="pi ${n?'r':'g'}"><svg class="i"><use href="#i-user"/></svg></span>
@@ -624,22 +716,49 @@ function renderHist(){
       <button class="btn sm warn" type="button" data-del="${esc(r.id)}"><svg class="i"><use href="#i-trash"/></svg>ลบ</button></li>`;
   }).join('') : `<li class="empty">${q?'ไม่พบรายการที่ค้นหา':'ยังไม่มีผลการประเมินที่บันทึกไว้'}</li>`;
 }
+$('histTabs').addEventListener('click',e=>{
+  const b = e.target.closest('button[data-tab]'); if(!b || b.dataset.tab===histTab) return;
+  histTab = b.dataset.tab; $('passErr').textContent='';
+  if(histTab==='shared' && !shared) loadShared(); else renderHist();
+});
+$('passBox').addEventListener('submit',e=>{
+  e.preventDefault(); const p=$('passIn').value.trim(); if(!p) return;
+  store.set(PASS_KEY, p); $('passIn').value=''; $('passErr').textContent=''; renderHist(); loadShared();
+});
+$('syncLine').addEventListener('click',e=>{
+  const a = e.target.closest('button[data-act]'); if(!a) return;
+  if(a.dataset.act==='flush') flush().then(()=>toast(pending().length?'ยังส่งไม่ได้ ตรวจสอบอินเทอร์เน็ต':'ส่งขึ้นระบบกลางครบแล้ว'));
+  if(a.dataset.act==='reload') loadShared();
+  if(a.dataset.act==='logout'){ store.set(PASS_KEY,''); shared=null; renderHist(); }
+});
 $('histList').addEventListener('click',e=>{
   const b = e.target.closest('button'); if(!b) return;
-  const recs = getRecords();
+  const recs = getRecords(), src = histSource();
   if(b.dataset.open){
-    const r = recs.find(x=>x.id===b.dataset.open); if(!r) return;
+    const r = src.find(x=>x.id===b.dataset.open); if(!r) return;
+    openedShared = histTab==='shared' ? r : null;
     restore(r); currentId = r.id; update();
     $('hist').close(); window.scrollTo({top:0}); toast('เปิดผลการประเมินแล้ว แก้ไขแล้วกด “บันทึกการแก้ไข”');
   } else if(b.dataset.del){
-    const r = recs.find(x=>x.id===b.dataset.del); if(!r) return;
-    if(!confirm(`ลบผลการประเมินของ ${r.fields.fName||'HN '+r.fields.fHN} ใช่หรือไม่?\nการลบไม่สามารถย้อนกลับได้`)) return;
+    const r = src.find(x=>x.id===b.dataset.del); if(!r) return;
+    if(histTab==='shared'){
+      if(!confirm(`ลบผลการประเมินของ ${r.fields.fName||'HN '+r.fields.fHN} ออกจากระบบกลางใช่หรือไม่?\nทุกคนจะไม่เห็นรายการนี้อีก และไม่สามารถย้อนกลับได้`)) return;
+      b.disabled = true;
+      api('delete', {password:store.get(PASS_KEY,''), id:r.id}).then(()=>{
+        shared = shared.filter(x=>x.id!==r.id);
+        store.set(OUTBOX_KEY, pending().filter(x=>x.id!==r.id));
+        if(openedShared && openedShared.id===r.id){ openedShared=null; if(currentId===r.id && !recs.some(x=>x.id===r.id)) currentId=null; }
+        renderHist(); update(); toast('ลบออกจากระบบกลางแล้ว');
+      }, err=>{ b.disabled=false; toast(err.code==='bad_password'?'รหัสผ่านไม่ถูกต้อง':'ลบไม่สำเร็จ ตรวจสอบอินเทอร์เน็ต'); });
+      return;
+    }
+    if(!confirm(`ลบผลการประเมินของ ${r.fields.fName||'HN '+r.fields.fHN} ออกจากเครื่องนี้ใช่หรือไม่?\nการลบไม่สามารถย้อนกลับได้`)) return;
     store.set(STORE_KEY, recs.filter(x=>x.id!==r.id));
     if(currentId===r.id) currentId=null;
     renderHist(); update();
   }
 });
-$('btnHist').addEventListener('click',()=>{ $('histQ').value=''; renderHist(); $('hist').showModal(); });
+$('btnHist').addEventListener('click',()=>{ $('histQ').value=''; renderHist(); $('hist').showModal(); if(histTab==='shared') loadShared(); });
 $('histClose').addEventListener('click',()=>$('hist').close());
 $('hist').addEventListener('click',e=>{ if(e.target===$('hist')) $('hist').close(); });
 $('histQ').addEventListener('input',renderHist);
@@ -652,14 +771,16 @@ function download(text, filename, type){
   document.body.appendChild(a); a.click(); a.remove();
   setTimeout(()=>URL.revokeObjectURL(url), 1000);
 }
-$('btnCsv').addEventListener('click',()=>{
-  const recs = getRecords();
-  if(!recs.length){ toast('ยังไม่มีข้อมูลให้ส่งออก'); return; }
-  const head = ['บันทึกเมื่อ','ชื่อ-สกุล','HN','อายุ (ปี)','น้ำหนัก (กก.)','ส่วนสูง (ซม.)','BMI','วันที่ประเมิน',
+const CSV_HEAD = ['บันทึกเมื่อ','ชื่อ-สกุล','HN','อายุ (ปี)','น้ำหนัก (กก.)','ส่วนสูง (ซม.)','BMI','วันที่ประเมิน',
     ...DOMAINS.map(d=>d.no+'. '+(d.sumTitle||d.title)),'13. ภาวะกระดูกพรุน (OSTA)','จำนวนด้านที่เสี่ยง','ด้านที่เสี่ยง','นัดคลินิกผู้สูงอายุ','ผู้ประเมิน'];
-  const rows = recs.map(r=>{ const f=r.fields, s=r.summary; return [
-    thStamp(r.savedAt), f.fName, f.fHN, f.fAge, f.fWt, f.fHt, s.bmi?s.bmi.toFixed(1):'', f.fDate,
-    ...s.results.map(x=>x.txt), s.risks.length, s.risks.join(', '), f.fAppt, f.fBy]; });
+const SHEET_HEAD = ['ID', ...CSV_HEAD, 'ข้อมูล (JSON)'];
+const csvRow = r => { const f=r.fields, s=r.summary; return [
+  thStamp(r.savedAt), f.fName, f.fHN, f.fAge, f.fWt, f.fHt, s.bmi?s.bmi.toFixed(1):'', f.fDate,
+  ...s.results.map(x=>x.txt), s.risks.length, s.risks.join(', '), f.fAppt, f.fBy]; };
+$('btnCsv').addEventListener('click',()=>{
+  const recs = histSource();
+  if(!recs.length){ toast('ยังไม่มีข้อมูลให้ส่งออก'); return; }
+  const head = CSV_HEAD, rows = recs.map(csvRow);
   const cell = v => { v=String(v??''); return /[",\r\n]/.test(v) ? '"'+v.replace(/"/g,'""')+'"' : v; };
   download('﻿'+[head,...rows].map(r=>r.map(cell).join(',')).join('\r\n'), `onepage-${today()}.csv`, 'text/csv;charset=utf-8');
 });
@@ -747,6 +868,7 @@ if('serviceWorker' in navigator && location.protocol.startsWith('http')){
 const draft = store.get(DRAFT_KEY, null);
 if(draft && draft.fields){ restore(draft); currentId = draft.currentId || null; update(); }
 else { loadSample(); update(); }
+flush();
 </script>
 </body>
 </html>
