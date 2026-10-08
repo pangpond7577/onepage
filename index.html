@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>ประเมินผู้สูงอายุ One Page</title>
+<title>คลินิกผู้สูงอายุ รพ.บ้านกรวด</title>
 <meta name="description" content="แบบประเมินผู้สูงอายุเบื้องต้น 13 ด้าน พร้อมคำนวณ BMI และ OSTA index อัตโนมัติ">
 <meta name="theme-color" content="#5b4fe0">
 <link rel="manifest" href="manifest.webmanifest">
@@ -57,9 +57,11 @@ button,input{font:inherit;color:inherit}
 .hero::before{width:220px;height:220px;right:-60px;top:-90px}
 .hero::after{width:140px;height:140px;left:38%;bottom:-90px}
 .brand{display:flex;gap:14px;align-items:center;position:relative;z-index:1;min-width:0}
-.logo{width:54px;height:54px;border-radius:16px;background:rgba(255,255,255,.22);display:grid;place-items:center;flex-shrink:0;box-shadow:inset 0 0 0 1px rgba(255,255,255,.3)}
-.logo .i{width:30px;height:30px}
-.hero h1{font-size:1.55rem;font-weight:700}
+.logo{background:#fff;border-radius:14px;padding:8px 12px;display:grid;place-items:center;flex-shrink:0;box-shadow:0 6px 16px -8px rgba(0,0,0,.35)}
+.logo img{display:block;height:46px;width:auto}
+.hero h1{font-size:1.6rem;font-weight:700}
+.hero .sub{display:block;font-size:1.12rem;font-weight:600;color:rgba(255,255,255,.95);margin-top:2px}
+@media (max-width:520px){.brand{flex-direction:column;align-items:flex-start;gap:10px}.logo img{height:38px}.hero h1{font-size:1.35rem}}
 .hero p{margin:4px 0 0;color:rgba(255,255,255,.9)}
 .hero p b{color:#fff;background:rgba(255,255,255,.22);padding:0 6px;border-radius:4px;font-weight:600}
 .actions{display:flex;gap:8px;flex-wrap:wrap;position:relative;z-index:1}
@@ -236,7 +238,8 @@ dialog.hist::backdrop{background:rgba(30,20,70,.45)}
   .print-only{display:block}
   .hero{margin:0 0 8px;padding:10px 14px;box-shadow:none}
   .hero h1{font-size:1.2rem}
-  .logo{width:36px;height:36px}
+  .logo{padding:4px 8px;box-shadow:none;border:1px solid #d9dcef}
+  .logo img{height:32px}
   .card{box-shadow:none}
   .layout{grid-template-columns:1fr 250px;gap:12px}
   .col{gap:8px}
@@ -294,9 +297,9 @@ dialog.hist::backdrop{background:rgba(30,20,70,.45)}
 <div class="wrap">
   <header class="hero">
     <div class="brand">
-      <span class="logo"><svg class="i"><use href="#i-heart"/></svg></span>
+      <span class="logo"><img src="icons/logo-bkh.png" alt="โรงพยาบาลบ้านกรวด (Bankruat Hospital)" width="600" height="209"></span>
       <div>
-        <h1>แบบประเมินผู้สูงอายุเบื้องต้น (One Page)</h1>
+        <h1>คลินิกผู้สูงอายุ โรงพยาบาลบ้านกรวด<span class="sub">แบบประเมินผู้สูงอายุเบื้องต้น (One Page)</span></h1>
         <p>การแปลผล: ตอบ <b>“ใช่”</b> ให้ถือว่าเสี่ยง · ข้อ 10 การได้ยิน ตอบ “ใช่” = ปกติ</p>
       </div>
     </div>
@@ -572,6 +575,7 @@ function update(){
 
   const lines = [
     'สรุปแบบประเมินผู้สูงอายุเบื้องต้น (One Page)',
+    'คลินิกผู้สูงอายุ โรงพยาบาลบ้านกรวด',
     `ชื่อ-สกุล: ${name||'-'}  HN: ${hn||'-'}`,
     `อายุ ${age>0?age:'-'} ปี  น้ำหนัก ${wt>0?wt:'-'} กก.  ส่วนสูง ${ht>0?ht:'-'} ซม.${bmi?'  BMI '+bmi.toFixed(1):''}`,
     `วันที่ประเมิน: ${thDate($('fDate').value)||'-'}`,
