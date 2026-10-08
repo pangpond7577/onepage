@@ -1,5 +1,5 @@
 // Service worker: app shell cached for offline use. Bump CACHE when files change.
-const CACHE = 'onepage-v4';
+const CACHE = 'onepage-v5';
 const SHELL = ['./', 'index.html', 'manifest.webmanifest', 'icons/icon.svg', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png', 'icons/logo-bkh.png'];
 
 self.addEventListener('install', e => {
