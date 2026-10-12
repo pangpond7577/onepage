@@ -219,20 +219,19 @@ function sheet_(header) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   let sh = ss.getSheetByName(SHEET_NAME);
   if (!sh) sh = ss.insertSheet(SHEET_NAME);
-  if (Array.isArray(header) && sh.getLastRow() === 0) {
-    const h = header.map(String).filter(x => x !== JSON_HEAD).concat([BY_HEAD, JSON_HEAD]);
-    sh.appendRow(h);
-    sh.setFrozenRows(1);
-    sh.getRange(1, 1, 1, h.length).setFontWeight('bold').setBackground('#ebe8ff');
-  } else if (sh.getLastRow() > 0) {
-    // sheets created before accounts existed have no "บันทึกโดย" column: add it before the JSON column
-    const last = sh.getLastColumn();
-    const head = sh.getRange(1, 1, 1, last).getValues()[0];
-    if (head.indexOf(BY_HEAD) < 0 && head[last - 1] === JSON_HEAD) {
-      sh.insertColumnBefore(last);
-      sh.getRange(1, last).setValue(BY_HEAD).setFontWeight('bold').setBackground('#ebe8ff');
-    }
+  if (!Array.isArray(header)) return sh;
+  const want = header.map(String).filter(x => x !== JSON_HEAD);
+  if (sh.getLastRow() > 0) {
+    // the app's columns changed (e.g. name/HN replaced by EL): keep the old sheet as an archive and start a new one
+    const have = sh.getRange(1, 1, 1, sh.getLastColumn()).getValues()[0].map(String).filter(x => x !== JSON_HEAD && x !== BY_HEAD);
+    if (have.join('|') === want.join('|')) return sh;
+    sh.setName(SHEET_NAME + ' (เดิม ' + Utilities.formatDate(new Date(), 'Asia/Bangkok', 'yyyy-MM-dd HH.mm') + ')');
+    sh = ss.insertSheet(SHEET_NAME);
   }
+  const h = want.concat([BY_HEAD, JSON_HEAD]);
+  sh.appendRow(h);
+  sh.setFrozenRows(1);
+  sh.getRange(1, 1, 1, h.length).setFontWeight('bold').setBackground('#ebe8ff');
   return sh;
 }
 

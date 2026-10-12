@@ -356,8 +356,7 @@ body.locked .wrap,body.locked .mbar{display:none}
       <section class="card patient" style="--c:#5b4fe0" aria-labelledby="pt-h">
         <div class="card-h"><span class="ico"><svg class="i"><use href="#i-user"/></svg></span><h2 id="pt-h">ข้อมูลผู้รับการประเมิน</h2></div>
         <div class="grid">
-          <div class="field wide"><label for="fName">ชื่อ-สกุล</label><input id="fName" autocomplete="off"></div>
-          <div class="field"><label for="fHN">HN</label><input id="fHN" autocomplete="off"></div>
+          <div class="field"><label for="fEL">EL (รหัสประจำตัวผู้ป่วย)</label><input id="fEL" autocomplete="off" autocapitalize="characters" spellcheck="false"></div>
           <div class="field"><label for="fAge">อายุ (ปี)</label><input id="fAge" type="number" inputmode="numeric" min="40" max="120"></div>
           <div class="field"><label for="fWt">น้ำหนัก (กก.)</label><input id="fWt" type="number" inputmode="decimal" step="0.1" min="20" max="200"></div>
           <div class="field"><label for="fHt">ส่วนสูง (ซม.)</label><input id="fHt" type="number" inputmode="decimal" step="0.1" min="100" max="220"></div>
@@ -413,7 +412,7 @@ body.locked .wrap,body.locked .mbar{display:none}
   </div>
   <div class="sync-line warn" id="syncLine" hidden></div>
   <div class="hist-tools">
-    <label class="search"><svg class="i"><use href="#i-search"/></svg><input type="search" id="histQ" placeholder="ค้นหาชื่อ หรือ HN" aria-label="ค้นหาชื่อ หรือ HN"></label>
+    <label class="search"><svg class="i"><use href="#i-search"/></svg><input type="search" id="histQ" placeholder="ค้นหา EL" aria-label="ค้นหา EL"></label>
     <button class="btn sm" id="btnReload" type="button"><svg class="i"><use href="#i-refresh"/></svg>รีเฟรช</button>
     <button class="btn sm" id="btnCsv" type="button"><svg class="i"><use href="#i-sheet"/></svg>ส่งออก Excel (CSV)</button>
   </div>
@@ -497,12 +496,13 @@ const DOMAINS = [
   {id:'vis',c:'#0fb5c9',icon:'vis',no:12,title:'การมองเห็น',pos:'ไม่ปกติ',neg:'ปกติ',items:['มีปัญหาใดๆ เกี่ยวกับการมองเห็น']},
 ];
 const ADL_LEVELS = {some:'ทำได้บางเรื่อง ต้องมีคนช่วย', most:'ทำไม่ได้ ต้องมีคนช่วยเป็นส่วนใหญ่/ทั้งหมด'};
-const FIELDS = ['fName','fHN','fAge','fWt','fHt','fDate','fAppt','fBy'];
+const FIELDS = ['fEL','fAge','fWt','fHt','fDate','fAppt','fBy'];
 const DRAFT_KEY = 'onepage-draft-v1', OUTBOX_KEY = 'onepage-outbox-v1', SESSION_KEY = 'onepage-session-v1';
 const LEGACY_KEY = 'onepage-records-v1', LEGACY_PASS = 'onepage-teampass-v1'; // device-only storage used before accounts existed
 // Central system: URL of the Google Apps Script web app (see apps-script/Code.gs)
 const SYNC_URL = 'https://script.google.com/macros/s/AKfycbyGUVF-nKhv_wUVWsoCCF2KN1cNH89GK2ZnVt3BUcNgxBw3FnhNNMEBNNrdQe9ftrjLNw/exec';
 const $ = id => document.getElementById(id);
+const elOf = f => f && f.fEL ? 'EL '+f.fEL : 'ไม่ระบุ EL';
 const esc = s => String(s??'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
 
 let ans = {}; let adlLevel = null; let bmiAuto = false;
@@ -635,8 +635,8 @@ function update(){
   $('barFill').style.width = (done/total*100)+'%';
   const pt = `${done}/${total} ข้อ`;
   $('prog').textContent = 'ประเมินแล้ว '+pt; $('mProg').textContent = 'ประเมินแล้ว '+pt;
-  const name=$('fName').value.trim(), hn=$('fHN').value.trim();
-  $('who').textContent = [name||'ยังไม่ระบุชื่อ', hn&&'HN '+hn, age>0&&age+' ปี', thDate($('fDate').value)].filter(Boolean).join(' · ');
+  const el=$('fEL').value.trim();
+  $('who').textContent = [el?'EL '+el:'ยังไม่ระบุ EL', age>0&&age+' ปี', thDate($('fDate').value)].filter(Boolean).join(' · ');
 
   const results = DOMAINS.map(d=>{
     const st=domainState(d);
@@ -658,7 +658,7 @@ function update(){
   const lines = [
     'สรุปแบบประเมินผู้สูงอายุเบื้องต้น (One Page)',
     'คลินิกผู้สูงอายุ โรงพยาบาลบ้านกรวด',
-    `ชื่อ-สกุล: ${name||'-'}  HN: ${hn||'-'}`,
+    `EL: ${el||'-'}`,
     `อายุ ${age>0?age:'-'} ปี  น้ำหนัก ${wt>0?wt:'-'} กก.  ส่วนสูง ${ht>0?ht:'-'} ซม.${bmi?'  BMI '+bmi.toFixed(1):''}`,
     `วันที่ประเมิน: ${thDate($('fDate').value)||'-'}`,
     '',
@@ -685,7 +685,7 @@ function renderAppState(){
   const label = editing ? 'บันทึกการแก้ไข' : 'บันทึกผล';
   document.querySelectorAll('#btnSave .lbl,#btnSave2 .lbl').forEach(el=>el.textContent=label);
   $('editing').hidden = !editing;
-  if(editing) $('editingTxt').textContent = `กำลังแก้ไขผลของ ${editing.fields.fName||'HN '+(editing.fields.fHN||'-')} (บันทึกล่าสุด ${thStamp(editing.savedAt)}${editing.savedByName?' โดย '+editing.savedByName:''})`;
+  if(editing) $('editingTxt').textContent = `กำลังแก้ไขผลของ ${elOf(editing.fields)} (บันทึกล่าสุด ${thStamp(editing.savedAt)}${editing.savedByName?' โดย '+editing.savedByName:''})`;
 }
 
 /* ---------- save / history ---------- */
@@ -705,8 +705,7 @@ function restore(s){
 function saveRecord(){
   if(!session){ showAuth(); return; }
   if(isSample){ toast('ข้อมูลนี้เป็นตัวอย่าง กด “ล้างแบบฟอร์ม” แล้วกรอกข้อมูลจริงก่อนบันทึก'); return; }
-  const name=$('fName').value.trim(), hn=$('fHN').value.trim();
-  if(!name && !hn){ toast('กรุณาใส่ชื่อ-สกุล หรือ HN ก่อนบันทึก'); $('fName').focus(); return; }
+  if(!$('fEL').value.trim()){ toast('กรุณาใส่ EL (รหัสประจำตัวผู้ป่วย) ก่อนบันทึก'); $('fEL').focus(); return; }
   const isEdit = !!currentId;
   const rec = {
     id: currentId || 'r'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),
@@ -784,11 +783,11 @@ function renderHist(){
   sl.innerHTML = n ? '<svg class="i"><use href="#i-alert"/></svg>รอส่งขึ้นระบบ '+n+' รายการ <button class="link" type="button" data-act="flush">ส่งตอนนี้</button>' : '';
   if(!records){ $('histList').innerHTML = '<li class="empty">กำลังโหลดข้อมูล…</li>'; return; }
   const q = $('histQ').value.trim().toLowerCase();
-  const list = records.filter(r=>!q || `${r.fields.fName} ${r.fields.fHN}`.toLowerCase().includes(q));
+  const list = records.filter(r=>!q || String(r.fields.fEL||'').toLowerCase().includes(q));
   $('histList').innerHTML = list.length ? list.map(r=>{
     const n = r.summary.risks.length;
     return `<li><span class="pi ${n?'r':'g'}"><svg class="i"><use href="#i-user"/></svg></span>
-      <div class="meta"><b>${esc(r.fields.fName||'ไม่ระบุชื่อ')}</b>${r.fields.fHN?' · HN '+esc(r.fields.fHN):''}${r.fields.fAge?' · '+esc(r.fields.fAge)+' ปี':''}
+      <div class="meta"><b>${esc(elOf(r.fields))}</b>${r.fields.fAge?' · '+esc(r.fields.fAge)+' ปี':''}
         <small>ประเมิน ${esc(thDate(r.fields.fDate)||'-')} · บันทึก ${esc(thStamp(r.savedAt))}${r.savedByName?' โดย '+esc(r.savedByName):''}${r.summary.done<r.summary.total?' · ยังประเมินไม่ครบ':''}</small></div>
       <span class="chip ${n?'pos':'neg'}">${n?'เสี่ยง '+n+' ด้าน':'ไม่พบความเสี่ยง'}</span>
       <button class="btn sm" type="button" data-open="${esc(r.id)}"><svg class="i"><use href="#i-open"/></svg>เปิด</button>
@@ -807,7 +806,7 @@ $('histList').addEventListener('click',e=>{
     $('hist').close(); window.scrollTo({top:0}); toast('เปิดผลการประเมินแล้ว แก้ไขแล้วกด “บันทึกการแก้ไข”');
   } else if(b.dataset.del){
     const r = records.find(x=>x.id===b.dataset.del); if(!r) return;
-    if(!confirm(`ลบผลการประเมินของ ${r.fields.fName||'HN '+r.fields.fHN} ใช่หรือไม่?\nทุกคนจะไม่เห็นรายการนี้อีก และไม่สามารถย้อนกลับได้`)) return;
+    if(!confirm(`ลบผลการประเมินของ ${elOf(r.fields)} ใช่หรือไม่?\nทุกคนจะไม่เห็นรายการนี้อีก และไม่สามารถย้อนกลับได้`)) return;
     b.disabled = true;
     api('delete', {id:r.id}).then(()=>{
       records = records.filter(x=>x.id!==r.id);
@@ -832,11 +831,11 @@ function download(text, filename, type){
   document.body.appendChild(a); a.click(); a.remove();
   setTimeout(()=>URL.revokeObjectURL(url), 1000);
 }
-const CSV_HEAD = ['บันทึกเมื่อ','ชื่อ-สกุล','HN','อายุ (ปี)','น้ำหนัก (กก.)','ส่วนสูง (ซม.)','BMI','วันที่ประเมิน',
+const CSV_HEAD = ['บันทึกเมื่อ','EL','อายุ (ปี)','น้ำหนัก (กก.)','ส่วนสูง (ซม.)','BMI','วันที่ประเมิน',
     ...DOMAINS.map(d=>d.no+'. '+(d.sumTitle||d.title)),'13. ภาวะกระดูกพรุน (OSTA)','จำนวนด้านที่เสี่ยง','ด้านที่เสี่ยง','นัดคลินิกผู้สูงอายุ','ผู้ประเมิน'];
 const SHEET_HEAD = ['ID', ...CSV_HEAD, 'ข้อมูล (JSON)'];
 const csvRow = r => { const f=r.fields, s=r.summary; return [
-  thStamp(r.savedAt), f.fName, f.fHN, f.fAge, f.fWt, f.fHt, s.bmi?s.bmi.toFixed(1):'', f.fDate,
+  thStamp(r.savedAt), f.fEL||'', f.fAge, f.fWt, f.fHt, s.bmi?s.bmi.toFixed(1):'', f.fDate,
   ...s.results.map(x=>x.txt), s.risks.length, s.risks.join(', '), f.fAppt, f.fBy]; };
 $('btnCsv').addEventListener('click',()=>{
   if(!records || !records.length){ toast('ยังไม่มีข้อมูลให้ส่งออก'); return; }
@@ -902,7 +901,7 @@ $('regForm').addEventListener('submit',e=>{
 function afterLogin(){
   document.body.classList.remove('locked');
   migrateLegacy();
-  if(isSample || !$('fName').value) startNew(); else update();
+  if(isSample || !$('fEL').value) startNew(); else update();
   toast('ยินดีต้อนรับ '+session.user.name);
   records = null; loadRecords();
   if(session.user.role==='admin') loadUsers(false);
@@ -911,7 +910,7 @@ function afterLogin(){
 function migrateLegacy(){
   const old = store.get(LEGACY_KEY, null);
   const valid = Array.isArray(old) ? old.filter(r=>r && r.id && r.fields && r.summary) : [];
-  valid.forEach(queue);
+  valid.forEach(r=>{ const {fName, fHN, ...rest} = r.fields; queue({...r, fields:rest}); });
   try{ localStorage.removeItem(LEGACY_KEY); localStorage.removeItem(LEGACY_PASS); }catch(e){}
   if(valid.length) setTimeout(()=>toast(`กำลังนำผลการประเมินเดิมในเครื่อง ${valid.length} รายการขึ้นระบบกลาง`), 3400);
 }
@@ -1021,7 +1020,7 @@ function hideBanner(){ $('banner').hidden=true; isSample=false; }
 
 function loadSample(){
   clearAll(); currentId=null;
-  $('fName').value='นางสมศรี ใจดี (ตัวอย่าง)'; $('fHN').value='000000';
+  $('fEL').value='EL000000 (ตัวอย่าง)';
   $('fAge').value=72; $('fWt').value=48; $('fHt').value=152; $('fBy').value='พยาบาลเวชปฏิบัติชุมชน';
   const set=(id,arr)=>arr.forEach((v,i)=>{ if(v!==null) ans[id+'-'+i]=v; });
   set('fall',[true,true]); set('nutr',[null,null,false,false]); set('inco',[false,true,false]);
