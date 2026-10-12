@@ -260,6 +260,32 @@ dialog.hist::backdrop{background:rgba(30,20,70,.45)}
   .seg button[aria-pressed="false"]{opacity:.35}
   .patient .grid{padding:10px 12px;gap:6px 12px}
 }
+/* one-page printout: a compact sheet built from the current answers */
+.print-sheet{display:none}
+@media print{
+  .wrap,.mbar,.toast,dialog{display:none!important}
+  @page{size:A4;margin:10mm}
+  .print-sheet{display:block;font-size:10.5px;line-height:1.3;color:#000;font-family:var(--f-body)}
+  .ps-h{display:flex;gap:12px;align-items:center;border-bottom:2px solid #03895a;padding-bottom:6px;margin-bottom:6px}
+  .ps-h img{height:36px;width:auto}
+  .ps-h b{display:block;font-family:var(--f-head);font-size:15px;color:#0b5e3c}
+  .ps-h span{font-size:12px}
+  .ps-info{width:100%;border-collapse:collapse;margin-bottom:6px}
+  .ps-info td{border:1px solid #bbb;padding:3px 6px}
+  .ps-cols{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:start}
+  .ps-cols table{width:100%;border-collapse:collapse}
+  .ps-cols td,.ps-cols th{border:1px solid #ccc;padding:2px 5px;vertical-align:top;text-align:left;font-weight:400}
+  .ps-cols tr.d th{background:#eef7f1;font-weight:700}
+  .ps-cols .n{width:18px;text-align:center}
+  .ps-cols .r{width:78px;text-align:center}
+  .ps-cols .sub{font-weight:400;color:#555;font-size:9.5px}
+  .ps .pos{color:#c62828;font-weight:700} .ps .neg{color:#1b7f3b} .ps .mid{color:#a86d00;font-weight:700} .ps .na{color:#888}
+  .ps-sum{margin-top:6px;border:1.5px solid #c62828;background:#fff1f1;padding:5px 8px;border-radius:4px}
+  .ps-sum.ok{border-color:#1b7f3b;background:#effaf2}
+  .ps-foot{display:grid;grid-template-columns:1fr 1fr;gap:4px 16px;margin-top:8px}
+  .ps-sign{grid-column:2;text-align:center;margin-top:16px}
+  .ps-note{margin-top:6px;font-size:9.5px;color:#555}
+}
 </style>
 </head>
 <body>
@@ -375,6 +401,8 @@ dialog.hist::backdrop{background:rgba(30,20,70,.45)}
     </aside>
   </main>
 </div>
+
+<section class="print-sheet ps" id="printSheet" aria-hidden="true"></section>
 
 <div class="mbar"><span class="prog" id="mProg"></span><button class="btn" id="btnSave3" type="button"><svg class="i"><use href="#i-save"/></svg>บันทึก</button><a class="btn primary" href="#summary"><svg class="i"><use href="#i-clip"/></svg>ดูสรุปผล</a></div>
 
@@ -606,8 +634,40 @@ function update(){
   $('printFoot').innerHTML = `นัดเข้าคลินิกผู้สูงอายุ: ${esc(thDate($('fAppt').value)||'-')}<br>ผู้ประเมิน/ให้สุขศึกษา: ${esc($('fBy').value.trim()||'-')}`;
 
   last = {results, risks, bmi, done, total};
+  renderPrint(results, risks, o, bmi);
   renderAppState();
   if(!isSample) store.set(DRAFT_KEY, {...snapshot(), currentId});
+}
+
+// A4 one-page printout of the current assessment
+function renderPrint(results, risks, o, bmi){
+  const val = id => esc($(id).value.trim()) || '-';
+  const cls = st => st==='pos'?'pos':st==='neg'?'neg':st==='mid'?'mid':'na';
+  const table = list => '<table>' + list.map(d=>{
+    const r = results.find(x=>x.no===d.no);
+    const head = `<tr class="d"><th class="n">${d.no}</th><th>${esc(d.title)}${d.note?' <span class="sub">('+esc(d.note)+')</span>':''}</th><th class="r ${cls(r.st)}">${r.st==='partial'?'ไม่ครบ':esc(r.txt)}</th></tr>`;
+    return head + d.items.map((t,i)=>{
+      const v = ans[key(d,i)];
+      return `<tr><td></td><td>${esc(t)}</td><td class="r ${isProblem(d,v)?'pos':''}">${v===true?'ใช่':v===false?'ไม่ใช่':'—'}</td></tr>`;
+    }).join('');
+  }).join('') + '</table>';
+  const osta13 = results.find(x=>x.no===13);
+  const ostaRows = `<tr class="d"><th class="n">13</th><th>OSTA index ภาวะกระดูกพรุน</th><th class="r ${cls(osta13.st)}">${o?BAND_TXT[o.band].replace('ความเสี่ยง',''):'—'}</th></tr>
+    <tr><td></td><td>ค่า OSTA index</td><td class="r">${o?(o.v>0?'+':'')+o.v:'—'}</td></tr>`;
+  $('printSheet').innerHTML = `
+    <header class="ps-h"><img src="icons/logo-bkh.png" alt=""><div><b>คลินิกผู้สูงอายุ โรงพยาบาลบ้านกรวด</b><span>แบบประเมินผู้สูงอายุเบื้องต้น (One Page)</span></div></header>
+    <table class="ps-info"><tr>
+      <td>EL <b>${val('fEL')}</b></td><td>อายุ <b>${val('fAge')}</b> ปี</td><td>น้ำหนัก <b>${val('fWt')}</b> กก.</td>
+      <td>ส่วนสูง <b>${val('fHt')}</b> ซม.</td><td>BMI <b>${bmi?bmi.toFixed(1):'-'}</b></td><td>วันที่ประเมิน <b>${esc(thDate($('fDate').value)||'-')}</b></td>
+    </tr></table>
+    <div class="ps-cols">${table(DOMAINS.slice(0,7))}${table(DOMAINS.slice(7)).replace('</table>', ostaRows+'</table>')}</div>
+    <div class="ps-sum ${risks.length?'':'ok'}"><b>${risks.length?'พบความเสี่ยง '+risks.length+' ด้าน':'ไม่พบความเสี่ยง'}</b>${risks.length?': '+esc(risks.map(r=>r.title).join(', ')):''}</div>
+    <div class="ps-foot">
+      <div>นัดเข้าคลินิกผู้สูงอายุ: <b>${esc(thDate($('fAppt').value)||'-')}</b></div>
+      <div>ผู้ประเมิน/ให้สุขศึกษา: <b>${val('fBy')}</b></div>
+      <div class="ps-sign">ลงชื่อ ...................................................... ผู้ประเมิน<br>( ${val('fBy')} )</div>
+    </div>
+    <p class="ps-note">การแปลผล: ตอบ “ใช่” ให้ถือว่าเสี่ยง · ข้อ 10 การได้ยิน ตอบ “ใช่” = ปกติ · OSTA: &gt; −1 ต่ำ, −1 ถึง −4 ปานกลาง, &lt; −4 สูง</p>`;
 }
 
 function renderAppState(){
