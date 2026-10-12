@@ -227,26 +227,6 @@ dialog.hist::backdrop{background:rgba(30,20,70,.45)}
   .mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:5;gap:8px;align-items:center;background:var(--paper);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px))}
   .mbar .prog{flex:1;min-width:0}
 }
-.auth{position:fixed;inset:0;z-index:40;overflow:auto;background:var(--bg);display:none;padding:24px 16px}
-body.locked .auth{display:grid;place-items:center}
-body.locked .wrap,body.locked .mbar{display:none}
-.auth-card{width:min(440px,100%);background:var(--paper);border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 20px 50px -24px rgba(3,137,90,.45)}
-.auth-top{background:var(--top-bg);color:var(--top-ink);padding:22px 20px 18px;text-align:center}
-.auth-top img{height:58px;width:auto;background:#fff;border-radius:12px;padding:6px 10px}
-.auth-top h1{font-size:1.3rem;margin-top:12px}
-.auth-top p{margin:2px 0 0;color:var(--top-muted);font-size:.95rem}
-.auth form,.acct-form{padding:14px 20px 18px;display:flex;flex-direction:column;gap:10px}
-.auth .btn,.acct-form .btn{justify-content:center}
-.auth-note{font-size:.82rem;color:var(--muted);text-align:center;padding:0 20px 18px}
-.msg{font-size:.92rem;border-radius:10px;padding:8px 12px}
-.msg.err{background:var(--risk-soft);color:var(--risk)}
-.msg.ok{background:var(--ok-soft);color:var(--ok)}
-.hint2{font-size:.8rem;color:var(--muted)}
-.acct-info{padding:14px 16px 4px}
-.acct-info b{font-family:var(--f-head);font-size:1.1rem}
-.acct-info small{display:block;color:var(--muted)}
-.acct-form h3{font-size:1rem}
-.uacts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
 .print-only{display:none}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 
@@ -307,10 +287,6 @@ body.locked .wrap,body.locked .mbar{display:none}
   <symbol id="i-open" viewBox="0 0 24 24"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.2 10H20a2 2 0 0 1 1.9 2.5l-1.5 6A2 2 0 0 1 18.4 20H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.7.9l.8 1.2a2 2 0 0 0 1.7.9H18a2 2 0 0 1 2 2v2"/></symbol>
   <symbol id="i-scale" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M8 9a6 6 0 0 1 8 0"/><path d="m12 12 1.5-3"/></symbol>
   <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.7-9h1.8a4.5 4.5 0 1 1 0 9Z"/></symbol>
-  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></symbol>
-  <symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></symbol>
-  <symbol id="i-key" viewBox="0 0 24 24"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></symbol>
-  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M3 21v-5h5"/></symbol>
   <!-- domain icons -->
   <symbol id="i-fall" viewBox="0 0 24 24"><path d="M4 16v-2.4C4 11.5 3 10.5 3 8c0-2.7 1.5-6 4.5-6C9.4 2 10 3.8 10 5.5c0 3.1-2 5.7-2 8.7V16a2 2 0 1 1-4 0Z"/><path d="M20 20v-2.4c0-2.1 1-3.1 1-5.6 0-2.7-1.5-6-4.5-6C14.6 6 14 7.8 14 9.5c0 3.1 2 5.7 2 8.7V20a2 2 0 1 0 4 0Z"/><path d="M16 17h4"/><path d="M4 13h4"/></symbol>
   <symbol id="i-nutr" viewBox="0 0 24 24"><path d="M12 6.5C10.5 5 8.5 5 7 5.5 4 6.5 3 10 4 14c1 3.5 3.5 7 6 7 1 0 1.3-.5 2-.5s1 .5 2 .5c2.5 0 5-3.5 6-7 1-4 0-7.5-3-8.5-1.5-.5-3.5-.5-5 1z"/><path d="M12 6.5C12 4 13 2.5 15 2"/></symbol>
@@ -342,8 +318,6 @@ body.locked .wrap,body.locked .mbar{display:none}
       <button class="btn" id="btnPrint" type="button"><svg class="i"><use href="#i-print"/></svg>พิมพ์ / PDF</button>
       <button class="btn" id="btnSample" type="button"><svg class="i"><use href="#i-sparkle"/></svg>ใส่ข้อมูลตัวอย่าง</button>
       <button class="btn warn" id="btnReset" type="button"><svg class="i"><use href="#i-eraser"/></svg><span class="lbl">ล้างแบบฟอร์ม</span></button>
-      <button class="btn" id="btnAdmin" type="button" hidden><svg class="i"><use href="#i-shield"/></svg>จัดการผู้ใช้ <span class="badge" id="pendCount" hidden>0</span></button>
-      <button class="btn" id="btnAcct" type="button"><svg class="i"><use href="#i-user"/></svg><span id="userName">บัญชี</span></button>
       <button class="btn" id="btnInstall" type="button" hidden><svg class="i"><use href="#i-download"/></svg>ติดตั้งแอป</button>
     </div>
   </header>
@@ -408,75 +382,28 @@ body.locked .wrap,body.locked .mbar{display:none}
   <div class="hist-h">
     <svg class="i"><use href="#i-history"/></svg>
     <h2 id="hist-h">ประวัติการประเมิน</h2>
-    <button class="btn sm" data-close type="button"><svg class="i"><use href="#i-x"/></svg>ปิด</button>
+    <button class="btn sm" id="histClose" type="button"><svg class="i"><use href="#i-x"/></svg>ปิด</button>
   </div>
-  <div class="sync-line warn" id="syncLine" hidden></div>
+  <div class="tabs" id="histTabs" role="tablist" hidden>
+    <button type="button" role="tab" data-tab="local" aria-selected="true"><svg class="i"><use href="#i-user"/></svg>เครื่องนี้</button>
+    <button type="button" role="tab" data-tab="shared" aria-selected="false"><svg class="i"><use href="#i-cloud"/></svg>ทุกคน (ระบบกลาง)</button>
+  </div>
+  <form class="pass" id="passBox" hidden>
+    <p>ใส่<b>รหัสผ่านทีม</b>เพื่อดูประวัติการประเมินของทุกคน <span class="err" id="passErr"></span></p>
+    <input type="password" id="passIn" autocomplete="current-password" placeholder="รหัสผ่านทีม" aria-label="รหัสผ่านทีม">
+    <button class="btn sm primary" type="submit">เข้าสู่ระบบ</button>
+  </form>
+  <div class="sync-line" id="syncLine" hidden></div>
   <div class="hist-tools">
     <label class="search"><svg class="i"><use href="#i-search"/></svg><input type="search" id="histQ" placeholder="ค้นหา EL" aria-label="ค้นหา EL"></label>
-    <button class="btn sm" id="btnReload" type="button"><svg class="i"><use href="#i-refresh"/></svg>รีเฟรช</button>
     <button class="btn sm" id="btnCsv" type="button"><svg class="i"><use href="#i-sheet"/></svg>ส่งออก Excel (CSV)</button>
+    <button class="btn sm" id="btnJson" type="button"><svg class="i"><use href="#i-archive"/></svg>สำรองข้อมูล</button>
+    <button class="btn sm" id="btnImport" type="button"><svg class="i"><use href="#i-upload"/></svg>นำเข้า</button>
+    <input type="file" id="fileImport" accept=".json,application/json" hidden>
   </div>
   <ul class="hist-list" id="histList"></ul>
-  <div class="hist-foot">ข้อมูลเก็บใน Google Sheet ของโรงพยาบาล · เห็นได้เฉพาะผู้ใช้ที่ได้รับอนุมัติ</div>
+  <div class="hist-foot" id="histFoot">ข้อมูลเก็บไว้ในเครื่องนี้เท่านั้น ไม่ได้ส่งขึ้นอินเทอร์เน็ต · กด “สำรองข้อมูล” เป็นระยะเพื่อป้องกันข้อมูลสูญหาย</div>
 </dialog>
-
-<dialog class="hist" id="acct" aria-labelledby="acct-h">
-  <div class="hist-h">
-    <svg class="i"><use href="#i-user"/></svg>
-    <h2 id="acct-h">บัญชีของฉัน</h2>
-    <button class="btn sm" data-close type="button"><svg class="i"><use href="#i-x"/></svg>ปิด</button>
-  </div>
-  <div class="acct-info" id="acctInfo"></div>
-  <form class="acct-form" id="pwForm">
-    <h3>เปลี่ยนรหัสผ่าน</h3>
-    <div class="msg" id="pwMsg" hidden></div>
-    <div class="field"><label for="pwOld">รหัสผ่านปัจจุบัน</label><input id="pwOld" type="password" autocomplete="current-password" required></div>
-    <div class="field"><label for="pwNew">รหัสผ่านใหม่ (อย่างน้อย 8 ตัวอักษร)</label><input id="pwNew" type="password" autocomplete="new-password" minlength="8" required></div>
-    <div class="field"><label for="pwNew2">ยืนยันรหัสผ่านใหม่</label><input id="pwNew2" type="password" autocomplete="new-password" minlength="8" required></div>
-    <button class="btn" type="submit"><svg class="i"><use href="#i-key"/></svg>เปลี่ยนรหัสผ่าน</button>
-  </form>
-  <div class="hist-foot"><button class="btn warn" id="btnLogout" type="button"><svg class="i"><use href="#i-logout"/></svg>ออกจากระบบ</button></div>
-</dialog>
-
-<dialog class="hist" id="admin" aria-labelledby="admin-h">
-  <div class="hist-h">
-    <svg class="i"><use href="#i-shield"/></svg>
-    <h2 id="admin-h">จัดการผู้ใช้</h2>
-    <button class="btn sm" data-close type="button"><svg class="i"><use href="#i-x"/></svg>ปิด</button>
-  </div>
-  <ul class="hist-list" id="userList"></ul>
-  <div class="hist-foot">ผู้ลงทะเบียนใหม่จะอยู่ในสถานะ “รออนุมัติ” จนกว่าผู้ดูแลจะกดอนุมัติ · บัญชีที่ถูกระงับจะออกจากระบบทันที</div>
-</dialog>
-
-<div class="auth" id="auth">
-  <div class="auth-card">
-    <div class="auth-top">
-      <img src="icons/logo-bkh.png" alt="โรงพยาบาลบ้านกรวด (Bankruat Hospital)" width="600" height="209">
-      <h1>คลินิกผู้สูงอายุ โรงพยาบาลบ้านกรวด</h1>
-      <p>แบบประเมินผู้สูงอายุเบื้องต้น (One Page)</p>
-    </div>
-    <div class="tabs" id="authTabs" role="tablist">
-      <button type="button" role="tab" data-auth="login" aria-selected="true"><svg class="i"><use href="#i-key"/></svg>เข้าสู่ระบบ</button>
-      <button type="button" role="tab" data-auth="register" aria-selected="false"><svg class="i"><use href="#i-plus"/></svg>ลงทะเบียน</button>
-    </div>
-    <form id="loginForm">
-      <div class="msg" id="loginMsg" hidden></div>
-      <div class="field"><label for="liUser">ชื่อผู้ใช้</label><input id="liUser" autocomplete="username" autocapitalize="none" spellcheck="false" required></div>
-      <div class="field"><label for="liPass">รหัสผ่าน</label><input id="liPass" type="password" autocomplete="current-password" required></div>
-      <button class="btn primary" type="submit"><svg class="i"><use href="#i-key"/></svg>เข้าสู่ระบบ</button>
-    </form>
-    <form id="regForm" hidden>
-      <div class="msg" id="regMsg" hidden></div>
-      <div class="field"><label for="rgName">ชื่อ-สกุล</label><input id="rgName" autocomplete="name" required></div>
-      <div class="field"><label for="rgPos">ตำแหน่ง</label><input id="rgPos" placeholder="เช่น พยาบาลวิชาชีพ"></div>
-      <div class="field"><label for="rgUser">ชื่อผู้ใช้</label><input id="rgUser" autocomplete="username" autocapitalize="none" spellcheck="false" pattern="[A-Za-z0-9._\-]{3,30}" required><span class="hint2">ภาษาอังกฤษ ตัวเลข จุด หรือขีด ยาว 3–30 ตัว</span></div>
-      <div class="field"><label for="rgPass">รหัสผ่าน (อย่างน้อย 8 ตัวอักษร)</label><input id="rgPass" type="password" autocomplete="new-password" minlength="8" required></div>
-      <div class="field"><label for="rgPass2">ยืนยันรหัสผ่าน</label><input id="rgPass2" type="password" autocomplete="new-password" minlength="8" required></div>
-      <button class="btn primary" type="submit"><svg class="i"><use href="#i-plus"/></svg>ลงทะเบียน</button>
-    </form>
-    <div class="auth-note">บัญชีใหม่ต้องได้รับการอนุมัติจากผู้ดูแลระบบก่อนใช้งาน</div>
-  </div>
-</div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -497,26 +424,33 @@ const DOMAINS = [
 ];
 const ADL_LEVELS = {some:'ทำได้บางเรื่อง ต้องมีคนช่วย', most:'ทำไม่ได้ ต้องมีคนช่วยเป็นส่วนใหญ่/ทั้งหมด'};
 const FIELDS = ['fEL','fAge','fWt','fHt','fDate','fAppt','fBy'];
-const DRAFT_KEY = 'onepage-draft-v1', OUTBOX_KEY = 'onepage-outbox-v1', SESSION_KEY = 'onepage-session-v1';
-const LEGACY_KEY = 'onepage-records-v1', LEGACY_PASS = 'onepage-teampass-v1'; // device-only storage used before accounts existed
-// Central system: URL of the Google Apps Script web app (see apps-script/Code.gs)
+const STORE_KEY = 'onepage-records-v1', DRAFT_KEY = 'onepage-draft-v1';
+// Shared storage: URL of the Google Apps Script web app (see apps-script/Code.gs). Empty = this device only.
 const SYNC_URL = 'https://script.google.com/macros/s/AKfycbyGUVF-nKhv_wUVWsoCCF2KN1cNH89GK2ZnVt3BUcNgxBw3FnhNNMEBNNrdQe9ftrjLNw/exec';
+const OUTBOX_KEY = 'onepage-outbox-v1', PASS_KEY = 'onepage-teampass-v1';
 const $ = id => document.getElementById(id);
+// patient label (records saved before EL existed have none; their names are never shown)
 const elOf = f => f && f.fEL ? 'EL '+f.fEL : 'ไม่ระบุ EL';
 const esc = s => String(s??'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
 
 let ans = {}; let adlLevel = null; let bmiAuto = false;
 let currentId = null, isSample = false, last = null;
-let records = null, openedRec = null, users = null;
+let histTab = 'local', shared = null, openedShared = null;
 const key = (d,i) => d.id+'-'+i;
 const isProblem = (d,v) => d.invert ? v===false : v===true;
 
-/* ---------- browser storage (session, unsent records and the open draft) ---------- */
+/* ---------- local storage (data stays on this device) ---------- */
 const store = {
   get(k,def){ try{ const v=localStorage.getItem(k); return v?JSON.parse(v):def; }catch(e){ return def; } },
   set(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); return true; }catch(e){ return false; } },
 };
-let session = store.get(SESSION_KEY, null);
+const getRecords = () => { const r=store.get(STORE_KEY,[]); return Array.isArray(r)?r:[]; };
+// earlier versions kept patient names and HN on the device: remove them
+[STORE_KEY, OUTBOX_KEY].forEach(k=>{
+  const a = store.get(k, null);
+  if(Array.isArray(a) && a.some(r=>r && r.fields && ('fName' in r.fields || 'fHN' in r.fields)))
+    store.set(k, a.map(r=>{ if(!r || !r.fields) return r; const {fName, fHN, ...fields} = r.fields; return {...r, fields}; }));
+});
 
 /* ---------- build form ---------- */
 const domWrap = $('domains');
@@ -673,19 +607,17 @@ function update(){
 
   last = {results, risks, bmi, done, total};
   renderAppState();
-  if(!isSample && session) store.set(DRAFT_KEY, {...snapshot(), currentId, opened: openedRec});
+  if(!isSample) store.set(DRAFT_KEY, {...snapshot(), currentId});
 }
 
 function renderAppState(){
-  const u = session && session.user;
-  document.body.classList.toggle('locked', !u);
-  if(u){ $('userName').textContent = u.name; $('btnAdmin').hidden = u.role!=='admin'; }
-  $('histCount').textContent = records ? records.length : '–';
-  const editing = currentId && openedRec && openedRec.id===currentId ? openedRec : null;
+  const recs = getRecords();
+  $('histCount').textContent = recs.length;
+  const editing = currentId && (recs.find(r=>r.id===currentId) || (openedShared && openedShared.id===currentId ? openedShared : null));
   const label = editing ? 'บันทึกการแก้ไข' : 'บันทึกผล';
   document.querySelectorAll('#btnSave .lbl,#btnSave2 .lbl').forEach(el=>el.textContent=label);
   $('editing').hidden = !editing;
-  if(editing) $('editingTxt').textContent = `กำลังแก้ไขผลของ ${elOf(editing.fields)} (บันทึกล่าสุด ${thStamp(editing.savedAt)}${editing.savedByName?' โดย '+editing.savedByName:''})`;
+  if(editing) $('editingTxt').textContent = `กำลังแก้ไขผลของ ${elOf(editing.fields)} (บันทึกล่าสุด ${thStamp(editing.savedAt)})`;
 }
 
 /* ---------- save / history ---------- */
@@ -703,58 +635,53 @@ function restore(s){
 }
 
 function saveRecord(){
-  if(!session){ showAuth(); return; }
   if(isSample){ toast('ข้อมูลนี้เป็นตัวอย่าง กด “ล้างแบบฟอร์ม” แล้วกรอกข้อมูลจริงก่อนบันทึก'); return; }
   if(!$('fEL').value.trim()){ toast('กรุณาใส่ EL (รหัสประจำตัวผู้ป่วย) ก่อนบันทึก'); $('fEL').focus(); return; }
-  const isEdit = !!currentId;
+  const recs = getRecords();
+  const i = currentId ? recs.findIndex(r=>r.id===currentId) : -1;
+  const isEdit = i>=0 || !!(openedShared && openedShared.id===currentId);
   const rec = {
-    id: currentId || 'r'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),
+    id: isEdit ? currentId : 'r'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),
     savedAt: new Date().toISOString(),
-    savedBy: session.user.username, savedByName: session.user.name,
     ...snapshot(),
     summary: {
       results: last.results.map(r=>({no:r.no, title:r.title, txt:r.st==='partial'?'ประเมินไม่ครบ':r.txt})),
       risks: last.risks.map(r=>r.title), bmi: last.bmi, done: last.done, total: last.total
     }
   };
-  currentId = rec.id; openedRec = rec;
-  queue(rec); update();
-  const note = last.done<last.total ? ` (ประเมินไป ${last.done}/${last.total} ข้อ)` : '';
-  toast('กำลังบันทึก…');
-  flush().then(()=>{
-    if(!session) return;
-    if(pending().some(x=>x.id===rec.id)) toast('ยังส่งขึ้นระบบไม่ได้ (ไม่มีอินเทอร์เน็ต) ระบบจะส่งให้อัตโนมัติเมื่อออนไลน์');
-    else toast((isEdit?'บันทึกการแก้ไขแล้ว':'บันทึกผลการประเมินแล้ว') + note);
-  });
+  if(i>=0) recs[i]=rec; else recs.unshift(rec);
+  if(!store.set(STORE_KEY, recs)){ toast('บันทึกไม่สำเร็จ: เบราว์เซอร์นี้ไม่อนุญาตให้เก็บข้อมูล'); return; }
+  currentId = rec.id;
+  if(openedShared && openedShared.id===rec.id) openedShared = rec;
+  toast((isEdit?'บันทึกการแก้ไขแล้ว':'บันทึกผลการประเมินแล้ว') + (last.done<last.total?` (ประเมินไป ${last.done}/${last.total} ข้อ)`:''));
+  update();
+  if(SYNC_URL){ queue(rec); flush().then(()=>{ if(pending().some(x=>x.id===rec.id)) toast('บันทึกในเครื่องแล้ว แต่ยังส่งขึ้นระบบกลางไม่ได้ จะส่งให้อัตโนมัติเมื่อออนไลน์'); }); }
 }
 
-/* ---------- central system (Google Sheets via Apps Script) ---------- */
+/* ---------- shared storage (Google Sheets via Apps Script) ---------- */
 async function api(action, payload={}){
   // text/plain avoids a CORS preflight, which Apps Script cannot answer
-  const res = await fetch(SYNC_URL, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'},
-    body:JSON.stringify({action, token: session ? session.token : undefined, ...payload})});
+  const res = await fetch(SYNC_URL, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify({action, ...payload})});
   const data = await res.json();
   if(!data.ok) throw Object.assign(new Error(data.error||'error'), {code:data.error});
   return data;
 }
-// records waiting to be sent (kept on the device only until the server confirms)
 const pending = () => { const o=store.get(OUTBOX_KEY,[]); return Array.isArray(o)?o:[]; };
 function queue(rec){ store.set(OUTBOX_KEY, [...pending().filter(x=>x.id!==rec.id), rec]); }
 let flushing = null;
 function flush(){
-  if(!session || !navigator.onLine) return Promise.resolve();
+  if(!SYNC_URL || !navigator.onLine) return Promise.resolve();
   if(flushing) return flushing;
   const run = async()=>{
     try{
       for(let ob=pending(); ob.length; ob=pending()){
         const r = ob[0];
-        const d = await api('save', {id:r.id, savedAt:r.savedAt, header:SHEET_HEAD, row:csvRow(r), json:JSON.stringify(r)});
+        await api('save', {id:r.id, savedAt:r.savedAt, header:SHEET_HEAD, row:csvRow(r), json:JSON.stringify(r)});
         // drop only the version that was sent; a newer edit saved meanwhile stays queued
         store.set(OUTBOX_KEY, pending().filter(x=>!(x.id===r.id && x.savedAt===r.savedAt)));
-        const saved = d.record || r;
-        if(records){ const k=records.findIndex(x=>x.id===saved.id); if(k>=0) records[k]=saved; else records.unshift(saved); }
+        if(shared){ const k=shared.findIndex(x=>x.id===r.id); if(k>=0) shared[k]=r; else shared.unshift(r); }
       }
-    }catch(e){ if(e.code==='bad_session') sessionExpired(); /* otherwise stays queued and is retried later */ }
+    }catch(e){ /* stays queued; retried on next save, on reconnect or on next open */ }
   };
   // clear the flag only after assignment (run() can finish synchronously when the queue is empty)
   flushing = run().finally(()=>{ flushing=null; renderAppState(); if($('hist').open) renderHist(); });
@@ -762,68 +689,100 @@ function flush(){
 }
 window.addEventListener('online', ()=>flush());
 
-async function loadRecords(){
-  if(!session) return;
+async function loadShared(){
+  if(!store.get(PASS_KEY,'')){ shared=null; renderHist(); return; }
+  $('histList').innerHTML = '<li class="empty">กำลังโหลดข้อมูลจากระบบกลาง…</li>';
   try{
     await flush();
-    const d = await api('list');
-    records = d.records;
+    const data = await api('list', {password:store.get(PASS_KEY,'')});
+    shared = data.records; renderHist();
   }catch(e){
-    if(e.code==='bad_session') return sessionExpired();
-    if($('hist').open && !records) $('histList').innerHTML = '<li class="empty">เชื่อมต่อระบบไม่ได้ ตรวจสอบอินเทอร์เน็ตแล้วกด “รีเฟรช”</li>';
-    toast('โหลดข้อมูลจากระบบไม่สำเร็จ ตรวจสอบอินเทอร์เน็ต');
-    return;
+    shared = null;
+    if(e.code==='bad_password'){ store.set(PASS_KEY,''); $('passErr').textContent='รหัสผ่านไม่ถูกต้อง'; renderHist(); }
+    else $('histList').innerHTML = '<li class="empty">เชื่อมต่อระบบกลางไม่ได้ ตรวจสอบอินเทอร์เน็ตแล้วลองใหม่</li>';
   }
-  renderAppState(); if($('hist').open) renderHist();
 }
 
+const histSource = () => histTab==='shared' ? (shared||[]) : getRecords();
 function renderHist(){
+  const sharedTab = histTab==='shared';
+  const loggedIn = !!store.get(PASS_KEY,'');
+  $('histTabs').hidden = !SYNC_URL;
+  document.querySelectorAll('#histTabs button').forEach(b=>b.setAttribute('aria-selected', String(b.dataset.tab===histTab)));
+  $('passBox').hidden = !(sharedTab && !loggedIn);
+  $('btnJson').hidden = $('btnImport').hidden = sharedTab;
+  $('histFoot').textContent = sharedTab
+    ? 'ข้อมูลรวมของทุกคนเก็บใน Google Sheet ของหน่วยงาน · ห้ามเปิดเผยรหัสผ่านทีมแก่ผู้ไม่เกี่ยวข้อง'
+    : (SYNC_URL ? 'ผลที่บันทึกในเครื่องนี้จะถูกส่งขึ้นระบบกลางอัตโนมัติด้วย' : 'ข้อมูลเก็บไว้ในเครื่องนี้เท่านั้น ไม่ได้ส่งขึ้นอินเทอร์เน็ต · กด “สำรองข้อมูล” เป็นระยะเพื่อป้องกันข้อมูลสูญหาย');
   const n = pending().length, sl = $('syncLine');
-  sl.hidden = !n;
-  sl.innerHTML = n ? '<svg class="i"><use href="#i-alert"/></svg>รอส่งขึ้นระบบ '+n+' รายการ <button class="link" type="button" data-act="flush">ส่งตอนนี้</button>' : '';
-  if(!records){ $('histList').innerHTML = '<li class="empty">กำลังโหลดข้อมูล…</li>'; return; }
+  sl.hidden = !SYNC_URL || (!n && !(sharedTab && loggedIn));
+  sl.className = 'sync-line' + (n ? ' warn' : '');
+  sl.innerHTML = (n ? '<svg class="i"><use href="#i-alert"/></svg>รอส่งขึ้นระบบกลาง '+n+' รายการ <button class="link" type="button" data-act="flush">ส่งตอนนี้</button>' : '')
+    + (sharedTab && loggedIn ? '<button class="link" type="button" data-act="reload">รีเฟรช</button><button class="link" type="button" data-act="logout">ออกจากระบบกลาง</button>' : '');
+  if(sharedTab && !loggedIn){ $('histList').innerHTML=''; return; }
+  renderHistList();
+}
+function renderHistList(){
   const q = $('histQ').value.trim().toLowerCase();
-  const list = records.filter(r=>!q || String(r.fields.fEL||'').toLowerCase().includes(q));
-  $('histList').innerHTML = list.length ? list.map(r=>{
+  const recs = histSource().filter(r=>!q || String(r.fields.fEL||'').toLowerCase().includes(q));
+  $('histList').innerHTML = recs.length ? recs.map(r=>{
     const n = r.summary.risks.length;
     return `<li><span class="pi ${n?'r':'g'}"><svg class="i"><use href="#i-user"/></svg></span>
       <div class="meta"><b>${esc(elOf(r.fields))}</b>${r.fields.fAge?' · '+esc(r.fields.fAge)+' ปี':''}
-        <small>ประเมิน ${esc(thDate(r.fields.fDate)||'-')} · บันทึก ${esc(thStamp(r.savedAt))}${r.savedByName?' โดย '+esc(r.savedByName):''}${r.summary.done<r.summary.total?' · ยังประเมินไม่ครบ':''}</small></div>
+        <small>ประเมิน ${esc(thDate(r.fields.fDate)||'-')} · บันทึก ${esc(thStamp(r.savedAt))}${r.summary.done<r.summary.total?' · ยังประเมินไม่ครบ':''}</small></div>
       <span class="chip ${n?'pos':'neg'}">${n?'เสี่ยง '+n+' ด้าน':'ไม่พบความเสี่ยง'}</span>
       <button class="btn sm" type="button" data-open="${esc(r.id)}"><svg class="i"><use href="#i-open"/></svg>เปิด</button>
       <button class="btn sm warn" type="button" data-del="${esc(r.id)}"><svg class="i"><use href="#i-trash"/></svg>ลบ</button></li>`;
   }).join('') : `<li class="empty">${q?'ไม่พบรายการที่ค้นหา':'ยังไม่มีผลการประเมินที่บันทึกไว้'}</li>`;
 }
+$('histTabs').addEventListener('click',e=>{
+  const b = e.target.closest('button[data-tab]'); if(!b || b.dataset.tab===histTab) return;
+  histTab = b.dataset.tab; $('passErr').textContent='';
+  if(histTab==='shared' && !shared) loadShared(); else renderHist();
+});
+$('passBox').addEventListener('submit',e=>{
+  e.preventDefault(); const p=$('passIn').value.trim(); if(!p) return;
+  store.set(PASS_KEY, p); $('passIn').value=''; $('passErr').textContent=''; renderHist(); loadShared();
+});
 $('syncLine').addEventListener('click',e=>{
-  if(!e.target.closest('[data-act=flush]')) return;
-  flush().then(()=>toast(pending().length?'ยังส่งไม่ได้ ตรวจสอบอินเทอร์เน็ต':'ส่งขึ้นระบบครบแล้ว'));
+  const a = e.target.closest('button[data-act]'); if(!a) return;
+  if(a.dataset.act==='flush') flush().then(()=>toast(pending().length?'ยังส่งไม่ได้ ตรวจสอบอินเทอร์เน็ต':'ส่งขึ้นระบบกลางครบแล้ว'));
+  if(a.dataset.act==='reload') loadShared();
+  if(a.dataset.act==='logout'){ store.set(PASS_KEY,''); shared=null; renderHist(); }
 });
 $('histList').addEventListener('click',e=>{
-  const b = e.target.closest('button'); if(!b || !records) return;
+  const b = e.target.closest('button'); if(!b) return;
+  const recs = getRecords(), src = histSource();
   if(b.dataset.open){
-    const r = records.find(x=>x.id===b.dataset.open); if(!r) return;
-    openedRec = r; restore(r); currentId = r.id; update();
+    const r = src.find(x=>x.id===b.dataset.open); if(!r) return;
+    openedShared = histTab==='shared' ? r : null;
+    restore(r); currentId = r.id; update();
     $('hist').close(); window.scrollTo({top:0}); toast('เปิดผลการประเมินแล้ว แก้ไขแล้วกด “บันทึกการแก้ไข”');
   } else if(b.dataset.del){
-    const r = records.find(x=>x.id===b.dataset.del); if(!r) return;
-    if(!confirm(`ลบผลการประเมินของ ${elOf(r.fields)} ใช่หรือไม่?\nทุกคนจะไม่เห็นรายการนี้อีก และไม่สามารถย้อนกลับได้`)) return;
-    b.disabled = true;
-    api('delete', {id:r.id}).then(()=>{
-      records = records.filter(x=>x.id!==r.id);
-      store.set(OUTBOX_KEY, pending().filter(x=>x.id!==r.id));
-      if(currentId===r.id){ currentId=null; openedRec=null; }
-      renderHist(); update(); toast('ลบผลการประเมินแล้ว');
-    }, err=>{ b.disabled=false; if(err.code==='bad_session') return sessionExpired(); toast('ลบไม่สำเร็จ ตรวจสอบอินเทอร์เน็ต'); });
+    const r = src.find(x=>x.id===b.dataset.del); if(!r) return;
+    if(histTab==='shared'){
+      if(!confirm(`ลบผลการประเมินของ ${elOf(r.fields)} ออกจากระบบกลางใช่หรือไม่?\nทุกคนจะไม่เห็นรายการนี้อีก และไม่สามารถย้อนกลับได้`)) return;
+      b.disabled = true;
+      api('delete', {password:store.get(PASS_KEY,''), id:r.id}).then(()=>{
+        shared = shared.filter(x=>x.id!==r.id);
+        store.set(OUTBOX_KEY, pending().filter(x=>x.id!==r.id));
+        if(openedShared && openedShared.id===r.id){ openedShared=null; if(currentId===r.id && !recs.some(x=>x.id===r.id)) currentId=null; }
+        renderHist(); update(); toast('ลบออกจากระบบกลางแล้ว');
+      }, err=>{ b.disabled=false; toast(err.code==='bad_password'?'รหัสผ่านไม่ถูกต้อง':'ลบไม่สำเร็จ ตรวจสอบอินเทอร์เน็ต'); });
+      return;
+    }
+    if(!confirm(`ลบผลการประเมินของ ${elOf(r.fields)} ออกจากเครื่องนี้ใช่หรือไม่?\nการลบไม่สามารถย้อนกลับได้`)) return;
+    store.set(STORE_KEY, recs.filter(x=>x.id!==r.id));
+    if(currentId===r.id) currentId=null;
+    renderHist(); update();
   }
 });
-$('btnHist').addEventListener('click',()=>{ $('histQ').value=''; renderHist(); $('hist').showModal(); loadRecords(); });
-$('btnReload').addEventListener('click',()=>{ records=null; renderHist(); loadRecords(); });
+$('btnHist').addEventListener('click',()=>{ $('histQ').value=''; renderHist(); $('hist').showModal(); if(histTab==='shared') loadShared(); });
+$('histClose').addEventListener('click',()=>$('hist').close());
+$('hist').addEventListener('click',e=>{ if(e.target===$('hist')) $('hist').close(); });
 $('histQ').addEventListener('input',renderHist);
-document.querySelectorAll('dialog.hist').forEach(d=>{
-  d.addEventListener('click',e=>{ if(e.target===d || e.target.closest('[data-close]')) d.close(); });
-});
 
-/* ---------- export ---------- */
+/* ---------- export / import ---------- */
 const today = () => new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);
 function download(text, filename, type){
   const url = URL.createObjectURL(new Blob([text],{type}));
@@ -838,154 +797,36 @@ const csvRow = r => { const f=r.fields, s=r.summary; return [
   thStamp(r.savedAt), f.fEL||'', f.fAge, f.fWt, f.fHt, s.bmi?s.bmi.toFixed(1):'', f.fDate,
   ...s.results.map(x=>x.txt), s.risks.length, s.risks.join(', '), f.fAppt, f.fBy]; };
 $('btnCsv').addEventListener('click',()=>{
-  if(!records || !records.length){ toast('ยังไม่มีข้อมูลให้ส่งออก'); return; }
-  const head = [...CSV_HEAD, 'บันทึกโดย'], rows = records.map(r=>[...csvRow(r), r.savedByName||'']);
+  const recs = histSource();
+  if(!recs.length){ toast('ยังไม่มีข้อมูลให้ส่งออก'); return; }
+  const head = CSV_HEAD, rows = recs.map(csvRow);
   const cell = v => { v=String(v??''); return /[",\r\n]/.test(v) ? '"'+v.replace(/"/g,'""')+'"' : v; };
-  download('\ufeff'+[head,...rows].map(r=>r.map(cell).join(',')).join('\r\n'), `onepage-${today()}.csv`, 'text/csv;charset=utf-8');
+  download('﻿'+[head,...rows].map(r=>r.map(cell).join(',')).join('\r\n'), `onepage-${today()}.csv`, 'text/csv;charset=utf-8');
 });
-
-/* ---------- login / register ---------- */
-const ERR = {
-  bad_login:'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง', pending:'บัญชีของคุณกำลังรอผู้ดูแลระบบอนุมัติ',
-  disabled:'บัญชีนี้ถูกระงับ กรุณาติดต่อผู้ดูแลระบบ', locked:'ใส่รหัสผ่านผิดหลายครั้ง กรุณารอ 15 นาทีแล้วลองใหม่',
-  username_taken:'ชื่อผู้ใช้นี้มีผู้ใช้แล้ว', bad_username:'ชื่อผู้ใช้ใช้ได้เฉพาะ a-z, 0-9, จุด หรือขีด ยาว 3–30 ตัว',
-  weak_password:'รหัสผ่านต้องยาวอย่างน้อย 8 ตัวอักษร', missing_name:'กรุณาใส่ชื่อ-สกุล',
-  forbidden:'คุณไม่มีสิทธิ์ทำรายการนี้', self:'ไม่สามารถเปลี่ยนสถานะหรือสิทธิ์ของบัญชีตัวเองได้',
-};
-const errText = e => ERR[e.code] || (e.code ? 'เกิดข้อผิดพลาด ('+e.code+')' : 'เชื่อมต่อระบบไม่ได้ ตรวจสอบอินเทอร์เน็ต');
-function msg(el, text, type='err'){ el.hidden = !text; el.className = 'msg '+type; el.textContent = text||''; }
-async function busy(form, fn){ const b=form.querySelector('button[type=submit]'); b.disabled=true; try{ await fn(); } finally{ b.disabled=false; } }
-
-function setAuthTab(t){
-  $('loginForm').hidden = t!=='login'; $('regForm').hidden = t!=='register';
-  document.querySelectorAll('#authTabs button').forEach(b=>b.setAttribute('aria-selected', String(b.dataset.auth===t)));
-}
-function showAuth(text, type){
-  document.querySelectorAll('dialog[open]').forEach(d=>d.close());
-  document.body.classList.add('locked'); setAuthTab('login'); msg($('loginMsg'), text, type);
-}
-function sessionExpired(){
-  session = null; records = null; users = null;
-  store.set(SESSION_KEY, null);
-  showAuth('กรุณาเข้าสู่ระบบอีกครั้ง (ออกจากระบบแล้ว หรือบัญชีถูกระงับ)');
-}
-$('authTabs').addEventListener('click',e=>{ const b=e.target.closest('button[data-auth]'); if(b) setAuthTab(b.dataset.auth); });
-
-$('loginForm').addEventListener('submit',e=>{
-  e.preventDefault();
-  busy(e.target, async()=>{
-    try{
-      const d = await api('login', {username:$('liUser').value.trim(), password:$('liPass').value});
-      session = {token:d.token, user:d.user}; store.set(SESSION_KEY, session);
-      $('liPass').value=''; msg($('loginMsg'),'');
-      afterLogin();
-    }catch(err){ msg($('loginMsg'), errText(err)); }
-  });
+$('btnJson').addEventListener('click',()=>{
+  const recs = getRecords();
+  if(!recs.length){ toast('ยังไม่มีข้อมูลให้สำรอง'); return; }
+  download(JSON.stringify({app:'onepage-elderly',version:1,exportedAt:new Date().toISOString(),records:recs},null,1), `onepage-backup-${today()}.json`, 'application/json');
 });
-$('regForm').addEventListener('submit',e=>{
-  e.preventDefault();
-  if($('rgPass').value !== $('rgPass2').value){ msg($('regMsg'),'รหัสผ่านทั้งสองช่องไม่ตรงกัน'); return; }
-  busy(e.target, async()=>{
-    try{
-      const username = $('rgUser').value.trim().toLowerCase();
-      const d = await api('register', {name:$('rgName').value.trim(), position:$('rgPos').value.trim(), username, password:$('rgPass').value});
-      e.target.reset(); msg($('regMsg'),'');
-      setAuthTab('login'); $('liUser').value = username;
-      msg($('loginMsg'), d.status==='active'
-        ? 'ลงทะเบียนสำเร็จ คุณเป็นผู้ดูแลระบบคนแรก เข้าสู่ระบบได้เลย'
-        : 'ลงทะเบียนสำเร็จ กรุณารอผู้ดูแลระบบอนุมัติ แล้วจึงเข้าสู่ระบบ', 'ok');
-    }catch(err){ msg($('regMsg'), errText(err)); }
-  });
-});
-
-function afterLogin(){
-  document.body.classList.remove('locked');
-  migrateLegacy();
-  if(isSample || !$('fEL').value) startNew(); else update();
-  toast('ยินดีต้อนรับ '+session.user.name);
-  records = null; loadRecords();
-  if(session.user.role==='admin') loadUsers(false);
-}
-// results saved on this device before accounts existed are sent to the central system, then removed from the device
-function migrateLegacy(){
-  const old = store.get(LEGACY_KEY, null);
-  const valid = Array.isArray(old) ? old.filter(r=>r && r.id && r.fields && r.summary) : [];
-  valid.forEach(r=>{ const {fName, fHN, ...rest} = r.fields; queue({...r, fields:rest}); });
-  try{ localStorage.removeItem(LEGACY_KEY); localStorage.removeItem(LEGACY_PASS); }catch(e){}
-  if(valid.length) setTimeout(()=>toast(`กำลังนำผลการประเมินเดิมในเครื่อง ${valid.length} รายการขึ้นระบบกลาง`), 3400);
-}
-
-/* ---------- my account ---------- */
-$('btnAcct').addEventListener('click',()=>{
-  const u = session.user;
-  $('acctInfo').innerHTML = `<b>${esc(u.name)}</b><small>${esc(u.position||'-')} · ชื่อผู้ใช้ ${esc(u.username)} · ${u.role==='admin'?'ผู้ดูแลระบบ':'ผู้ใช้งาน'}</small>`;
-  $('pwForm').reset(); msg($('pwMsg'),''); $('acct').showModal();
-});
-$('pwForm').addEventListener('submit',e=>{
-  e.preventDefault();
-  if($('pwNew').value !== $('pwNew2').value){ msg($('pwMsg'),'รหัสผ่านใหม่ทั้งสองช่องไม่ตรงกัน'); return; }
-  busy(e.target, async()=>{
-    try{ await api('changePassword', {oldPassword:$('pwOld').value, newPassword:$('pwNew').value}); e.target.reset(); msg($('pwMsg'),'เปลี่ยนรหัสผ่านแล้ว','ok'); }
-    catch(err){ if(err.code==='bad_session') return sessionExpired(); msg($('pwMsg'), err.code==='bad_login'?'รหัสผ่านปัจจุบันไม่ถูกต้อง':errText(err)); }
-  });
-});
-$('btnLogout').addEventListener('click',()=>{
-  const n = pending().length;
-  if(n && !confirm(`ยังมีผลการประเมิน ${n} รายการที่ยังไม่ได้ส่งขึ้นระบบ\nถ้าออกจากระบบตอนนี้ รายการเหล่านี้จะถูกลบ\nต้องการออกจากระบบหรือไม่?`)) return;
-  if(session) api('logout').catch(()=>{});
-  session = null; records = null; users = null; openedRec = null; currentId = null;
-  // nothing about patients stays on the device after logout
-  [SESSION_KEY, OUTBOX_KEY, DRAFT_KEY].forEach(k=>{ try{ localStorage.removeItem(k); }catch(e){} });
-  loadSample(); update(); showAuth('ออกจากระบบแล้ว','ok');
-});
-
-/* ---------- user management (admin) ---------- */
-async function loadUsers(render=true){
+$('btnImport').addEventListener('click',()=>$('fileImport').click());
+$('fileImport').addEventListener('change',async e=>{
+  const file = e.target.files[0]; e.target.value=''; if(!file) return;
   try{
-    users = (await api('users')).users;
-    const p = users.filter(u=>u.status==='pending').length;
-    $('pendCount').hidden = !p; $('pendCount').textContent = p;
-    if(render) renderUsers();
-  }catch(e){
-    if(e.code==='bad_session') return sessionExpired();
-    if(render) $('userList').innerHTML = '<li class="empty">'+esc(errText(e))+'</li>';
-  }
-}
-function renderUsers(){
-  const ST = {pending:['mid','รออนุมัติ','',0], active:['neg','ใช้งาน','g',1], disabled:['na','ระงับ','r',2]};
-  const list = [...users].sort((a,b)=>(ST[a.status]||[])[3]-(ST[b.status]||[])[3] || a.name.localeCompare(b.name,'th'));
-  $('userList').innerHTML = list.map(u=>{
-    const [chip, label, pi] = ST[u.status] || ['na', u.status, ''];
-    const btn = (act, text, cls='') => `<button class="btn sm ${cls}" type="button" data-act="${act}" data-u="${esc(u.username)}">${text}</button>`;
-    const acts = u.username===session.user.username ? '<span class="prog">บัญชีของคุณ</span>'
-      : u.status==='pending' ? btn('approve','อนุมัติ','primary') + btn('reject','ไม่อนุมัติ','warn')
-      : u.status==='active' ? btn('disable','ระงับ','warn') + btn(u.role==='admin'?'demote':'promote', u.role==='admin'?'ยกเลิกผู้ดูแล':'ตั้งเป็นผู้ดูแล') + btn('reset','รีเซ็ตรหัสผ่าน')
-      : btn('enable','เปิดใช้งาน','primary');
-    return `<li><span class="pi ${pi}"><svg class="i"><use href="#i-user"/></svg></span>
-      <div class="meta"><b>${esc(u.name)}</b>${u.role==='admin'?' <span class="chip auto">ผู้ดูแล</span>':''}
-        <small>${esc(u.position||'-')} · ${esc(u.username)} · ลงทะเบียน ${u.created?esc(thStamp(u.created)):'-'}${u.lastLogin?' · เข้าใช้ล่าสุด '+esc(thStamp(u.lastLogin)):''}</small></div>
-      <span class="chip ${chip}">${label}</span><div class="uacts">${acts}</div></li>`;
-  }).join('') || '<li class="empty">ยังไม่มีผู้ใช้</li>';
-}
-$('btnAdmin').addEventListener('click',()=>{ $('userList').innerHTML='<li class="empty">กำลังโหลด…</li>'; $('admin').showModal(); loadUsers(); });
-$('userList').addEventListener('click',async e=>{
-  const b = e.target.closest('button[data-act]'); if(!b) return;
-  const u = users.find(x=>x.username===b.dataset.u); if(!u) return;
-  const act = b.dataset.act;
-  let call;
-  if(act==='approve' || act==='enable') call = ['setUser', {username:u.username, status:'active'}];
-  if(act==='reject' && confirm(`ไม่อนุมัติบัญชีของ ${u.name}?`)) call = ['setUser', {username:u.username, status:'disabled'}];
-  if(act==='disable' && confirm(`ระงับบัญชีของ ${u.name}?\nผู้ใช้จะออกจากระบบทันทีและเข้าใช้งานไม่ได้`)) call = ['setUser', {username:u.username, status:'disabled'}];
-  if(act==='promote' && confirm(`ตั้ง ${u.name} เป็นผู้ดูแลระบบ?\nผู้ดูแลอนุมัติ/ระงับผู้ใช้คนอื่นได้`)) call = ['setUser', {username:u.username, role:'admin'}];
-  if(act==='demote' && confirm(`ยกเลิกสิทธิ์ผู้ดูแลของ ${u.name}?`)) call = ['setUser', {username:u.username, role:'user'}];
-  if(act==='reset'){
-    const p = prompt(`ตั้งรหัสผ่านใหม่ให้ ${u.name} (อย่างน้อย 8 ตัวอักษร)\nแจ้งรหัสนี้ให้ผู้ใช้ แล้วให้เปลี่ยนเองในเมนูบัญชีของฉัน`);
-    if(p) call = ['resetPassword', {username:u.username, newPassword:p}];
-  }
-  if(!call) return;
-  b.disabled = true;
-  try{ await api(...call); toast('บันทึกการเปลี่ยนแปลงแล้ว'); await loadUsers(); }
-  catch(err){ b.disabled = false; if(err.code==='bad_session') return sessionExpired(); toast(errText(err)); }
+    const data = JSON.parse(await file.text());
+    const incoming = (Array.isArray(data)?data:data.records||[]).filter(r=>r && r.id && r.fields && r.summary)
+      .map(r=>{ const {fName, fHN, ...fields} = r.fields; return {...r, fields}; });
+    if(!incoming.length) throw new Error('empty');
+    const recs = getRecords(); let added=0, updated=0;
+    incoming.forEach(r=>{
+      const i = recs.findIndex(x=>x.id===r.id);
+      if(i<0){ recs.push(r); added++; }
+      else if(r.savedAt > recs[i].savedAt){ recs[i]=r; updated++; }
+    });
+    recs.sort((a,b)=>b.savedAt.localeCompare(a.savedAt));
+    if(!store.set(STORE_KEY, recs)) throw new Error('store');
+    renderHist(); renderAppState();
+    toast(`นำเข้าแล้ว: เพิ่มใหม่ ${added} รายการ, อัปเดต ${updated} รายการ`);
+  }catch(err){ toast('ไฟล์ไม่ถูกต้อง ใช้ไฟล์ที่ได้จากปุ่ม “สำรองข้อมูล” เท่านั้น'); }
 });
 
 /* ---------- actions ---------- */
@@ -1010,7 +851,7 @@ $('btnReset').addEventListener('click',e=>{
   startNew();
 });
 $('btnNew').addEventListener('click',startNew);
-function startNew(){ clearAll(); currentId=null; openedRec=null; if(session) $('fBy').value=session.user.name; hideBanner(); update(); window.scrollTo({top:0}); }
+function startNew(){ clearAll(); currentId=null; hideBanner(); update(); window.scrollTo({top:0}); }
 function clearAll(){
   ans={}; adlLevel=null; bmiAuto=false;
   FIELDS.forEach(f=>$(f).value='');
@@ -1043,16 +884,11 @@ if('serviceWorker' in navigator && location.protocol.startsWith('http')){
   window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 }
 
-/* ---------- start: login first, then resume the last unsaved form ---------- */
-const draft = session ? store.get(DRAFT_KEY, null) : null;
-if(draft && draft.fields){ restore(draft); currentId = draft.currentId || null; openedRec = draft.opened || null; update(); }
+/* ---------- start: resume the last unsaved form, otherwise show the sample ---------- */
+const draft = store.get(DRAFT_KEY, null);
+if(draft && draft.fields){ restore(draft); currentId = draft.currentId || null; update(); }
 else { loadSample(); update(); }
-if(session){
-  migrateLegacy(); loadRecords();
-  if(session.user.role==='admin') loadUsers(false);
-  // refresh name/role, and sign out at once if the account was disabled
-  if(navigator.onLine) api('me').then(d=>{ session.user=d.user; store.set(SESSION_KEY, session); renderAppState(); }, e=>{ if(e.code==='bad_session') sessionExpired(); });
-} else showAuth();
+flush();
 </script>
 </body>
 </html>
